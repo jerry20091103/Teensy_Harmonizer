@@ -12,8 +12,8 @@ void updatePage()
 
 void setup()
 {
-    // setup USB serial
-    Serial.begin(9600);
+    // setup USB serial, also change begin time from 9600 to 9500 for commit test
+    Serial.begin(9500);
     // Init UI
     PageManager.Init();
     // setup Hardware
