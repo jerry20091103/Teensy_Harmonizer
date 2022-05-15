@@ -1,5 +1,6 @@
 #include "Hardware.h"
 #include "Controls.h"
+#include "AudioObjects.h"
 
 HardwareRotaryEncoder* enc0;
 HardwareRotaryEncoder* enc1;
@@ -35,7 +36,10 @@ void HardwareSetup()
     // TODO
 
     // * setup audio objects
-    // TODO
+    AudioMemory(20);
+    sgtl5000.enable();
+    sgtl5000.inputSelect(AUDIO_INPUT_LINEIN);
+    sgtl5000.volume(0.5);
 
 
 }
