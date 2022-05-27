@@ -4,14 +4,14 @@
 void BtnPressCallback(pinid_t pin, bool isHeld)
 {
     // we put serial here for testing
-    Serial.println("Button Pressed: " + String(pin) + "isHeld: " + String(isHeld));
+    Serial.println("Button Pressed: " + String(pin) + "\tisHeld: " + String(isHeld));
     // calls the callback function of the page currently running on screen.
     PageManager.getCurPage()->onBtnPressed(pin);
 }
 
 void BtnReleaseCallback(pinid_t pin, bool isHeld)
 {
-    Serial.println("Button Released: " + String(pin) + "isHeld: " + String(isHeld));
+    Serial.println("Button Released: " + String(pin) + "\tisHeld: " + String(isHeld));
     PageManager.getCurPage()->onBtnReleased(pin);
 }
 

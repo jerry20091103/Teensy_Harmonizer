@@ -3,9 +3,10 @@
 
 #include "IoAbstractionWire.h"
 #include "TaskManagerIO.h"
+#include <LiquidCrystal_I2C.h>
 
 // *Pins
-// Rotray Encoders and buttons (we use )
+// Rotray Encoders and buttons
 #define ENC1A 26
 #define ENC1B 25
 #define BTN_ENC1 24
@@ -16,6 +17,9 @@
 // rotary encoder object
 extern HardwareRotaryEncoder* enc0;
 extern HardwareRotaryEncoder* enc1;
+
+// Display object
+extern LiquidCrystal_I2C lcd; 
 
 void HardwareSetup();
 

@@ -2,8 +2,10 @@
 #include "Controls.h"
 #include "AudioObjects.h"
 
-HardwareRotaryEncoder* enc0;
-HardwareRotaryEncoder* enc1;
+LiquidCrystal_I2C lcd(0x27, 16, 42);
+
+HardwareRotaryEncoder *enc0;
+HardwareRotaryEncoder *enc1;
 
 void HardwareSetup()
 {
@@ -25,21 +27,31 @@ void HardwareSetup()
     //* setup buttons
 
     // BtnPressCallback is called when the library detects a button press.
-    switches.addSwitch(BTN_ENC1/*pin number*/, BtnPressCallback/*callback funciton*/); 
+    switches.addSwitch(BTN_ENC1 /*pin number*/, BtnPressCallback /*callback funciton*/);
     // addSwitch() only binds a callback for button press, we need to bind button release callback separetely.
     switches.onRelease(BTN_ENC1, BtnReleaseCallback);
 
-    switches.addSwitch(BTN_ENC2, BtnPressCallback); 
+    switches.addSwitch(BTN_ENC2, BtnPressCallback);
     switches.onRelease(BTN_ENC2, BtnReleaseCallback);
 
     // * setup LCD display
-    // TODO
+    // We use LiquidCrystal_I2C display library
+    // basically, it the I2C version of the Arduino LiquidCrystal library
+    // https://www.arduino.cc/reference/en/libraries/liquidcrystal/
+    // !When using the display, print the content to Serial too. My midi keyboard does not have the same display.
+    lcd.init();
+    lcd.backlight();
+    
+    // !DEBUG
+    // test the display
+    lcd.setCursor(0, 0);
+    lcd.print("Hello World");
+    lcd.setCursor(0, 1);
+    lcd.print("Second Line");
 
     // * setup audio objects
     AudioMemory(20);
     sgtl5000.enable();
     sgtl5000.inputSelect(AUDIO_INPUT_LINEIN);
     sgtl5000.volume(0.5);
-
-
 }

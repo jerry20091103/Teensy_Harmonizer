@@ -16,11 +16,18 @@
         ? whereas the library depedencies needs them to be double. 
 */
 
+bool ledState = false;
 
 void updatePage()
 {
     PageManager.getCurPage()->update();
     PageManager.getCurPage()->draw();
+}
+
+void blinkLED()
+{
+    digitalWrite(LED_BUILTIN, ledState);
+    ledState = !ledState;
 }
 
 void setup()
@@ -36,14 +43,17 @@ void setup()
     // setup Hardware
     HardwareSetup();
 
-    Serial.print("Setup complete");
+    Serial.println("Setup complete");
 
     // switch to the first page
     PageManager.switchPage(PITCH_PAGE);
     // schedule UI updates every 10 ms
     taskManager.scheduleFixedRate(10, updatePage);
+    // blink LED to let us know the program is still running
+    pinMode(LED_BUILTIN, OUTPUT);
+    taskManager.scheduleFixedRate(1000, blinkLED);
 
-    // unmute amp (debug)
+    // unmute amp
     digitalWrite(0, HIGH);
 
     // test pitchshift module
