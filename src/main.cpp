@@ -50,7 +50,7 @@ void setup()
 
     // setup USB serial
     Serial.begin(9600);
-    while(!Serial){}
+    //while(!Serial){}
     // Init UI
     PageManager.Init();
     Serial.println("PageInit");
@@ -76,12 +76,12 @@ void setup()
     digitalWrite(0, HIGH);
 
     // test pitchshift module
-    pitchShiftL.setSemitone(0);
-    pitchShiftR.setSemitone(0);
+    pitchShiftL.setSemitone(7);
+    pitchShiftR.setSemitone(7);
     // Init note detector
     noteFreq.begin(0.2);
     // !debug: test with mic
-    sgtl5000.micGain(36);
+    sgtl5000.micGain(30);
     sgtl5000.inputSelect(AUDIO_INPUT_MIC);
 }
 
