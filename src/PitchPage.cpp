@@ -1,4 +1,5 @@
 #include "PitchPage.h"
+#include "Hardware.h"
 
 void PitchPage::onBtnPressed(unsigned char pin)
 {
