@@ -15,11 +15,11 @@
 #define BTN_ENC2 27
 
 // rotary encoder object
-extern HardwareRotaryEncoder* enc0;
-extern HardwareRotaryEncoder* enc1;
+extern HardwareRotaryEncoder *enc0;
+extern HardwareRotaryEncoder *enc1;
 
 // Display object
-extern LiquidCrystal_I2C lcd; 
+extern LiquidCrystal_I2C lcd;
 
 void HardwareSetup();
 
