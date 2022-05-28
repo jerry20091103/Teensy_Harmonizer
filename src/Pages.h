@@ -16,7 +16,7 @@ class Pages
 public:
     // Page button press callback function
     virtual void onBtnPressed(unsigned char pin) = 0;
-    // Page button hold callback function, will appear after onBtnPressed callback
+    // Page button release callback function
     virtual void onBtnReleased(unsigned char pin) = 0;
     // Page encoder callback function
     virtual void onEncTurned(unsigned char id, int value) = 0;
