@@ -57,8 +57,8 @@ void setup()
     digitalWrite(0, HIGH);
 
     // test pitchshift module
-    pitchShiftL.setSemitone(-2);
-    pitchShiftR.setSemitone(-2);
+    pitchShiftL.setSemitone(0);
+    pitchShiftR.setSemitone(0);
 }
 
 void loop()

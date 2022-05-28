@@ -6,7 +6,7 @@
 #include <LiquidCrystal_I2C.h>
 
 // *Pins
-// Rotray Encoders and buttons
+// Rotary Encoders and buttons
 #define ENC1A 26
 #define ENC1B 25
 #define BTN_ENC1 24
