@@ -30,10 +30,15 @@ public:
     void setDryMix(float value);
 };
 
+
+uint8_t detectPitch();
+
 extern AudioInputI2S i2sIn;
 
 extern AudioEffectPitchShift pitchShiftL;
 extern AudioEffectPitchShift pitchShiftR;
+
+extern AudioAnalyzeNoteFrequency noteFreq;
 
 extern AudioOutputI2S i2sOut;
 
@@ -41,6 +46,7 @@ extern AudioConnection Con_i2sIn_psL;
 extern AudioConnection Con_i2sIn_psR;
 extern AudioConnection Con_psL_i2sOut;
 extern AudioConnection Con_psR_i2sOut;
+extern AudioConnection Con_i2sIn_nf;
 
 extern AudioControlSGTL5000 sgtl5000;
 
