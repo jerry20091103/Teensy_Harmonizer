@@ -3,7 +3,7 @@
 
 #define MAX_PAGE 2
 
-enum pages
+enum pages:unsigned char
 {
     PITCH_PAGE,
     MIX_PAGE

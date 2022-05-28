@@ -38,15 +38,20 @@ void setup()
 
     // setup USB serial
     Serial.begin(9600);
+    while(!Serial){}
     // Init UI
     PageManager.Init();
+    Serial.println("PageInit");
     // setup Hardware
     HardwareSetup();
-
     Serial.println("Setup complete");
-
     // switch to the first page
     PageManager.switchPage(PITCH_PAGE);
+    Serial.println("switchPage");
+
+    
+
+
     // schedule UI updates every 10 ms
     taskManager.scheduleFixedRate(10, updatePage);
     // blink LED to let us know the program is still running

@@ -9,14 +9,22 @@ HardwareRotaryEncoder *enc1;
 
 void HardwareSetup()
 {
+    // * setup LCD display
+    // We use LiquidCrystal_I2C display library
+    // basically, it the I2C version of the Arduino LiquidCrystal library
+    // https://www.arduino.cc/reference/en/libraries/liquidcrystal/
+    // !When using the display, print the content to Serial too. My midi keyboard does not have the same display.
+    lcd.init();
+    lcd.backlight();
+
     // We use IOAbstraction library to handle switches and rotary encoders
     // https://www.thecoderscorner.com/products/arduino-libraries/io-abstraction/
 
     switches.initialiseInterrupt(ioUsingArduino(), true);
     //* setup rotray encoders
     // EncXcallback is called when the library detects movent on encoders
-    enc0 = new HardwareRotaryEncoder(ENC1A, ENC1B, Enc0Callback, HWACCEL_SLOWER);
-    enc1 = new HardwareRotaryEncoder(ENC2A, ENC2B, Enc1Callback, HWACCEL_SLOWER);
+    enc0 = new HardwareRotaryEncoder(ENC0A, ENC0B, Enc0Callback, HWACCEL_SLOWER);
+    enc1 = new HardwareRotaryEncoder(ENC1A, ENC1B, Enc1Callback, HWACCEL_SLOWER);
     // add encoders to the switches object in the library
     switches.setEncoder(0, enc0);
     switches.setEncoder(1, enc1);
@@ -27,20 +35,12 @@ void HardwareSetup()
     //* setup buttons
 
     // BtnPressCallback is called when the library detects a button press.
-    switches.addSwitch(BTN_ENC1 /*pin number*/, BtnPressCallback /*callback funciton*/);
+    switches.addSwitch(BTN_ENC0 /*pin number*/, BtnPressCallback /*callback funciton*/);
     // addSwitch() only binds a callback for button press, we need to bind button release callback separetely.
+    switches.onRelease(BTN_ENC0, BtnReleaseCallback);
+
+    switches.addSwitch(BTN_ENC1, BtnPressCallback);
     switches.onRelease(BTN_ENC1, BtnReleaseCallback);
-
-    switches.addSwitch(BTN_ENC2, BtnPressCallback);
-    switches.onRelease(BTN_ENC2, BtnReleaseCallback);
-
-    // * setup LCD display
-    // We use LiquidCrystal_I2C display library
-    // basically, it the I2C version of the Arduino LiquidCrystal library
-    // https://www.arduino.cc/reference/en/libraries/liquidcrystal/
-    // !When using the display, print the content to Serial too. My midi keyboard does not have the same display.
-    lcd.init();
-    lcd.backlight();
     
     // !DEBUG
     // test the display
