@@ -3,7 +3,7 @@
 #include "Pages.h"
 #include "AudioObjects.h"
 
-/* 
+/*
     !WARNING: For the code to compile, you need to add "(double)" to the 3 std::max() functions call in "random.tcc".
     Here's how to do it:
         Go to lib/DaisySP/Utility/dsp.h.
@@ -13,7 +13,7 @@
         Add "(double)" cast conversions to the floating point constants
             ex. in line 1265, "std::max(6.0, std::min(__m, __dx))" -> "std::max((double)6.0, std::min(__m, __dx))"
         ? This is because the compiler in the Teensy platform automaitcaly converts floating point constants to single precision(float),
-        ? whereas the library depedencies needs them to be double. 
+        ? whereas the library depedencies needs them to be double.
 */
 
 bool ledState = false;
@@ -36,7 +36,7 @@ void setup()
     pinMode(0, OUTPUT);
     digitalWrite(0, LOW);
 
-    // setup USB serial, also change begin time from 9600 to 9500 for commit test
+    // setup USB serial
     Serial.begin(9600);
     // Init UI
     PageManager.Init();
