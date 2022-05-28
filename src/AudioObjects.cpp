@@ -1,4 +1,5 @@
 #include "AudioObjects.h"
+#include "math.h"
 
 #define F2S16_SCALE 32767
 #define S162F_SCALE 3.05181e-5
@@ -8,14 +9,26 @@ AudioInputI2S i2sIn;
 AudioEffectPitchShift pitchShiftL;
 AudioEffectPitchShift pitchShiftR;
 
+AudioAnalyzeNoteFrequency noteFreq;
+
 AudioOutputI2S i2sOut;
 
 AudioConnection Con_i2sIn_psL(i2sIn, 0, pitchShiftL, 0);
 AudioConnection Con_i2sIn_psR(i2sIn, 1, pitchShiftR, 0);
 AudioConnection Con_psL_i2sOut(pitchShiftL, 0, i2sOut, 0);
 AudioConnection Con_psR_i2sOut(pitchShiftR, 0, i2sOut, 1);
+AudioConnection Con_i2sIn_nf(i2sIn, 0, noteFreq, 0);
 
 AudioControlSGTL5000 sgtl5000;
+
+uint8_t lastNote = 0;
+
+// convert midi
+uint8_t freqToNote(float freq)
+{
+    // n  =  12*log2(fn/440 Hz) + 69
+    return round((float)(12.0f*log2f(freq/440.0f))) + 69;
+}
 
 // converts unsigned 16 bit int to float
 float s162f(int16_t x)
@@ -30,14 +43,28 @@ int16_t f2s16(float x)
     return (int32_t)(x * F2S16_SCALE);
 }
 
+uint8_t detectPitch()
+{
+    if (noteFreq.available())
+    {
+        float freq = noteFreq.read();
+        uint8_t note = freqToNote(freq);
+        if(note != lastNote)
+        {
+            lastNote = note;
+        }
+    }
+    return lastNote;
+}
+
 void AudioEffectPitchShift::update(void)
 {
     audio_block_t *block;
     // do nothing if no pitch shifting is needed.
-    if(semitones == 0)
+    if (semitones == 0)
     {
         block = receiveReadOnly(0);
-        if(block)
+        if (block)
         {
             transmit(block);
             release(block);
@@ -47,7 +74,7 @@ void AudioEffectPitchShift::update(void)
     else
     {
         block = receiveWritable(0);
-        if(block)
+        if (block)
         {
             for (uint16_t i = 0; i < AUDIO_BLOCK_SAMPLES; i++)
             {

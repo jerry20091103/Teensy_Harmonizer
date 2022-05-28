@@ -30,6 +30,18 @@ void blinkLED()
     ledState = !ledState;
 }
 
+// !debug
+uint8_t last_pitch = 0;
+void printPitch()
+{
+    uint8_t cur_pitch = detectPitch();
+    if (last_pitch != cur_pitch)
+    {
+        Serial.println(cur_pitch);
+        last_pitch = cur_pitch;
+    }
+}
+
 void setup()
 {
     // mute amp (debug, only used in the midi keybaord)
@@ -52,6 +64,8 @@ void setup()
     // blink LED to let us know the program is still running
     pinMode(LED_BUILTIN, OUTPUT);
     taskManager.scheduleFixedRate(1000, blinkLED);
+    // Detect note
+    taskManager.scheduleFixedRate(10, printPitch);
 
     // unmute amp
     digitalWrite(0, HIGH);
@@ -59,6 +73,11 @@ void setup()
     // test pitchshift module
     pitchShiftL.setSemitone(0);
     pitchShiftR.setSemitone(0);
+    // Init note detector
+    noteFreq.begin(0.2);
+    // !debug: test with mic
+    sgtl5000.micGain(36);
+    sgtl5000.inputSelect(AUDIO_INPUT_MIC);
 }
 
 void loop()
