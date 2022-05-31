@@ -3,12 +3,15 @@
 
 #define F2S16_SCALE 32767
 #define S162F_SCALE 3.05181e-5
+#define HIGH_NOTE 100
+#define LOW_NOTE 40
 
 AudioInputI2S i2sIn;
 
 AudioEffectPitchShift pitchShiftL;
 AudioEffectPitchShift pitchShiftR;
 
+AudioFilterBiquad lpf;
 AudioAnalyzeNoteFrequency noteFreq;
 
 AudioOutputI2S i2sOut;
@@ -17,7 +20,8 @@ AudioConnection Con_i2sIn_psL(i2sIn, 0, pitchShiftL, 0);
 AudioConnection Con_i2sIn_psR(i2sIn, 1, pitchShiftR, 0);
 AudioConnection Con_psL_i2sOut(pitchShiftL, 0, i2sOut, 0);
 AudioConnection Con_psR_i2sOut(pitchShiftR, 0, i2sOut, 1);
-AudioConnection Con_i2sIn_nf(i2sIn, 0, noteFreq, 0);
+AudioConnection Con_i2sIn_lpf(i2sIn, 0, lpf, 0);
+AudioConnection Con_lpf_nf(lpf, 0, noteFreq, 0);
 
 AudioControlSGTL5000 sgtl5000;
 
@@ -40,7 +44,7 @@ int16_t f2s16(float x)
 {
     x = x > 1 ? 1 : x;
     x = x < -1 ? -1 : x;
-    return (int32_t)(x * F2S16_SCALE);
+    return (int16_t)(x * F2S16_SCALE);
 }
 
 uint8_t detectPitch()
@@ -49,7 +53,8 @@ uint8_t detectPitch()
     {
         float freq = noteFreq.read();
         uint8_t note = freqToNote(freq);
-        if(note != lastNote)
+        
+        if(note != lastNote && note >= LOW_NOTE && note <= HIGH_NOTE) // discard notes that are too high or too low.
         {
             lastNote = note;
         }

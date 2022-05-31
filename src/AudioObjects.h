@@ -33,11 +33,20 @@ public:
 
 uint8_t detectPitch();
 
+/* Current audio connection:
+             +---> lpf ---> noteFreq ---> (pitch detection) 
+             |
+    [i2sIn]--+------> pitchShift -----> [i2sOut]
+
+*/
+
+
 extern AudioInputI2S i2sIn;
 
 extern AudioEffectPitchShift pitchShiftL;
 extern AudioEffectPitchShift pitchShiftR;
 
+extern AudioFilterBiquad lpf;
 extern AudioAnalyzeNoteFrequency noteFreq;
 
 extern AudioOutputI2S i2sOut;
@@ -46,7 +55,8 @@ extern AudioConnection Con_i2sIn_psL;
 extern AudioConnection Con_i2sIn_psR;
 extern AudioConnection Con_psL_i2sOut;
 extern AudioConnection Con_psR_i2sOut;
-extern AudioConnection Con_i2sIn_nf;
+extern AudioConnection Con_i2sIn_lpf;
+extern AudioConnection Con_lpf_nf;
 
 extern AudioControlSGTL5000 sgtl5000;
 

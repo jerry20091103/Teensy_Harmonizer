@@ -37,7 +37,7 @@ void printPitch()
     uint8_t cur_pitch = detectPitch();
     if (last_pitch != cur_pitch)
     {
-        Serial.println(cur_pitch);
+        Serial.println((cur_pitch - 36) % 12);
         last_pitch = cur_pitch;
     }
 }
@@ -76,13 +76,17 @@ void setup()
     digitalWrite(0, HIGH);
 
     // test pitchshift module
-    pitchShiftL.setSemitone(7);
-    pitchShiftR.setSemitone(7);
+    pitchShiftL.setSemitone(0);
+    pitchShiftR.setSemitone(0);
     // Init note detector
-    noteFreq.begin(0.2);
+    noteFreq.begin(0.15);
     // !debug: test with mic
-    sgtl5000.micGain(30);
     sgtl5000.inputSelect(AUDIO_INPUT_MIC);
+    sgtl5000.micGain(30);   // need to set gain again after selecting mic
+    
+    // Init audio filter
+    //lpf.setLowpass(0, 3000); // ? low pass filter seems to hurt YIN algo really badly.
+    lpf.setHighpass(0, 80);
 }
 
 void loop()
