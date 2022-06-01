@@ -2,6 +2,7 @@
 #include "Hardware.h"
 #include "Pages.h"
 #include "AudioObjects.h"
+#include "AudioFunction.h"
 
 /*
     !WARNING: For the code to compile, you need to add "(double)" to the 3 std::max() functions call in "random.tcc".
@@ -34,10 +35,10 @@ void blinkLED()
 uint8_t last_pitch = 0;
 void printPitch()
 {
-    uint8_t cur_pitch = detectPitch();
+    uint8_t cur_pitch = detectPitch(Key::GS);
     if (last_pitch != cur_pitch)
     {
-        Serial.println((cur_pitch - 36) % 12);
+        Serial.println(cur_pitch);
         last_pitch = cur_pitch;
     }
 }

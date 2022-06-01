@@ -1,10 +1,5 @@
 #include "AudioObjects.h"
-#include "math.h"
-
-#define F2S16_SCALE 32767
-#define S162F_SCALE 3.05181e-5
-#define HIGH_NOTE 100
-#define LOW_NOTE 40
+#include "AudioFunction.h"
 
 AudioInputI2S i2sIn;
 
@@ -24,43 +19,6 @@ AudioConnection Con_i2sIn_lpf(i2sIn, 0, lpf, 0);
 AudioConnection Con_lpf_nf(lpf, 0, noteFreq, 0);
 
 AudioControlSGTL5000 sgtl5000;
-
-uint8_t lastNote = 0;
-
-// convert midi
-uint8_t freqToNote(float freq)
-{
-    // n  =  12*log2(fn/440 Hz) + 69
-    return round((float)(12.0f*log2f(freq/440.0f))) + 69;
-}
-
-// converts unsigned 16 bit int to float
-float s162f(int16_t x)
-{
-    return ((float)x * S162F_SCALE);
-}
-// converts float to unsigned 16 bit
-int16_t f2s16(float x)
-{
-    x = x > 1 ? 1 : x;
-    x = x < -1 ? -1 : x;
-    return (int16_t)(x * F2S16_SCALE);
-}
-
-uint8_t detectPitch()
-{
-    if (noteFreq.available())
-    {
-        float freq = noteFreq.read();
-        uint8_t note = freqToNote(freq);
-        
-        if(note != lastNote && note >= LOW_NOTE && note <= HIGH_NOTE) // discard notes that are too high or too low.
-        {
-            lastNote = note;
-        }
-    }
-    return lastNote;
-}
 
 void AudioEffectPitchShift::update(void)
 {

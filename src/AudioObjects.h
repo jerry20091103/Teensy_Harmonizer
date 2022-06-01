@@ -1,3 +1,6 @@
+#ifndef AUDIO_OBJECTS_H
+#define AUDIO_OBJECTS_H
+
 #include <Audio.h>
 #include "AudioStream.h"
 #include <daisysp.h>
@@ -30,9 +33,6 @@ public:
     void setDryMix(float value);
 };
 
-
-uint8_t detectPitch();
-
 /* Current audio connection:
              +---> lpf ---> noteFreq ---> (pitch detection) 
              |
@@ -60,3 +60,4 @@ extern AudioConnection Con_lpf_nf;
 
 extern AudioControlSGTL5000 sgtl5000;
 
+#endif
