@@ -69,17 +69,17 @@ void AudioEffectPitchShift::setBlockSize(uint8_t id)
 void AudioEffectPitchShift::setWetMix(float value)
 {
     value = value > 1 ? 1 : value;
-    value = value < -1 ? -1 : value;
+    value = value < 0 ? 0 : value;
     __disable_irq();
     wetMix = value;
-    __disable_irq();
+    __enable_irq();
 }
 
 void AudioEffectPitchShift::setDryMix(float value)
 {
     value = value > 1 ? 1 : value;
-    value = value < -1 ? -1 : value;
+    value = value < 0 ? 0 : value;
     __disable_irq();
     dryMix = value;
-    __disable_irq();
+    __enable_irq();
 }

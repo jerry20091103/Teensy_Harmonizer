@@ -41,7 +41,7 @@ void HardwareSetup()
 
     switches.addSwitch(BTN_ENC1, BtnPressCallback);
     switches.onRelease(BTN_ENC1, BtnReleaseCallback);
-    
+
     // !DEBUG
     // test the display
     lcd.setCursor(0, 0);
