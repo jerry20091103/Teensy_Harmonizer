@@ -35,7 +35,12 @@ void blinkLED()
 uint8_t last_pitch = 0;
 void printPitch()
 {
-    uint8_t cur_pitch = detectPitch(Key::GS);
+    uint8_t cur_pitch = detectPitch(Key::C);
+    // set pitch shift
+    int8_t shift = calculateHarmony(-3, cur_pitch);
+    pitchShiftL.setSemitone(shift);
+    pitchShiftR.setSemitone(shift);
+
     if (last_pitch != cur_pitch)
     {
         Serial.println(cur_pitch);
@@ -71,7 +76,7 @@ void setup()
     pinMode(LED_BUILTIN, OUTPUT);
     taskManager.scheduleFixedRate(1000, blinkLED);
     // Detect note
-    taskManager.scheduleFixedRate(10, printPitch);
+    taskManager.scheduleFixedRate(3, printPitch);
 
     // unmute amp
     digitalWrite(0, HIGH);

@@ -19,4 +19,11 @@ uint8_t detectPitch(Key key);
 // I -> 0, II -> 1.... VII -> 7
 uint8_t roundToMajor(float note, Key key);
 
+/**
+    calculate the required pitch shift in semitones
+    @param interval how many "degree" to harmonize
+    @param note current input note in the major scale, eg. I->0, II->1...
+*/
+int8_t calculateHarmony(int8_t interval, uint8_t note);
+
 #endif
