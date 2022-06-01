@@ -7,6 +7,9 @@ void PitchPage::onBtnPressed(unsigned char pin)
     if (pin == BTN_ENC0)
     {
         PageManager.switchPage(MIX_PAGE);
+        // How to change the sensitivity of the rotary encoder?
+        // enc0->changePrecision(0, 0, 0);
+        // enc1->changePrecision(0, 0, 0);
     }
     else if (pin == BTN_ENC1)
     {
