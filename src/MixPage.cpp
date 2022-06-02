@@ -5,11 +5,12 @@ void MixPage::onBtnPressed(unsigned char pin)
 {
     // change page to PitchPage
     if (pin == BTN_ENC0)
-    {
+    {   
+        //enc0Value = wetCal * 100;
+        //enc1Value = dryCal * 100;
+        Serial.printf("*--wetCal: %f, enc0Value: %d--\n", wetCal, enc0Value);
+        Serial.printf("*--dryCal: %f, enc1Value: %d--\n", dryCal, enc1Value);
         PageManager.switchPage(PITCH_PAGE);
-        // How to change the sensitivity of the rotary encoder?
-        // enc0->changePrecision(0, 0, 0);
-        // enc1->changePrecision(0, 0, 0);
     }
     else if (pin == BTN_ENC1)
     {
@@ -32,29 +33,15 @@ void MixPage::onBtnReleased(unsigned char pin)
 void MixPage::onEncTurned(unsigned char id, int value)
 {
     if (id == 0)
-    {
-        wetCal = wetCal + 0.01 * value;
-        if (wetCal < 0)
-        {
-            wetCal = 0;
-        }
-        else if (wetCal > 1)
-        {
-            wetCal = 1;
-        }
+    {   
+        enc0Value = value;
+        wetCal = 0.01 * value;
         pitchShiftL.setWetMix(wetCal);
     }
     else if (id == 1)
     {
-        dryCal = dryCal + 0.01 * value;
-        if (dryCal < 0)
-        {
-            dryCal = 0;
-        }
-        else if (dryCal > 1)
-        {
-            dryCal = 1;
-        }
+        enc1Value = value;
+        dryCal = 0.01 * value;
         pitchShiftL.setDryMix(dryCal);
     }
     updateDisplay();
@@ -62,6 +49,10 @@ void MixPage::onEncTurned(unsigned char id, int value)
 
 void MixPage::configurePage()
 {
+    enc0->changePrecision(100, enc0Value);
+    enc1->changePrecision(100, enc1Value);
+    Serial.printf("--wetCal: %f, enc0Value: %d--\n", wetCal, enc0Value);
+    Serial.printf("--dryCal: %f, enc1Value: %d--\n", dryCal, enc1Value);
     updateDisplay();
 }
 

@@ -30,6 +30,6 @@ void PageManager_::Init()
 
 void PageManager_::switchPage(int pageID)
 {   
-    PageArr[pageID]->configurePage();
     currentPageId = pageID;
+    PageArr[pageID]->configurePage();
 }

@@ -34,12 +34,12 @@ public:
     void init();
 
 private:
-    //
-    Key key = C;
-    //
-    int8_t interval = 0;
+
     void updateDisplay();
     String keyToString(Key key);
 };
+
+extern Key key;
+extern int8_t interval;
 
 #endif
