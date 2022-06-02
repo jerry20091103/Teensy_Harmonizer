@@ -35,9 +35,9 @@ void blinkLED()
 uint8_t last_pitch = 0;
 void printPitch()
 {
-    uint8_t cur_pitch = detectPitch(Key::C);
+    uint8_t cur_pitch = detectPitch(key);
     // set pitch shift
-    int8_t shift = calculateHarmony(-3, cur_pitch);
+    int8_t shift = calculateHarmony(interval, cur_pitch);
     pitchShiftL.setSemitone(shift);
     pitchShiftR.setSemitone(shift);
 

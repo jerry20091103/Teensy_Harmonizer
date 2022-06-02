@@ -43,7 +43,7 @@ void AudioEffectPitchShift::update(void)
             {
                 float data_f = s162f(block->data[i]);
                 float wet = dsPitchShift.Process(data_f);
-                block->data[i] = f2s16(wet);
+                block->data[i] = f2s16(wet) * wetMix + block->data[i] * dryMix;
             }
             transmit(block);
             release(block);

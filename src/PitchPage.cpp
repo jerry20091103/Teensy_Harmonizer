@@ -1,15 +1,15 @@
 #include "PitchPage.h"
 #include "Hardware.h"
 
+Key key = C;
+int8_t interval = 0;
+
 void PitchPage::onBtnPressed(unsigned char pin)
 {
     // change page to MixPage
     if (pin == BTN_ENC0)
     {
         PageManager.switchPage(MIX_PAGE);
-        // How to change the sensitivity of the rotary encoder?
-        // enc0->changePrecision(0, 0, 0);
-        // enc1->changePrecision(0, 0, 0);
     }
     else if (pin == BTN_ENC1)
     {
@@ -60,6 +60,8 @@ void PitchPage::onEncTurned(unsigned char id, int value)
 
 void PitchPage::configurePage()
 {
+    enc0->changePrecision(0, 0);
+    enc1->changePrecision(0, 0);
     updateDisplay();
 }
 

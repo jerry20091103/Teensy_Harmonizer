@@ -20,8 +20,12 @@ public:
 
 private:
     void updateDisplay();
-    float wetCal = 0.0;
-    float dryCal = 0.0;
+    float wetCal = 0.50;
+    float dryCal = 0.50;
+
+    // for changePrecision used by MixPage
+    int enc0Value = 50;
+    int enc1Value = 50;
 };
 
 #endif
