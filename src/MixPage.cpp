@@ -5,7 +5,7 @@ void MixPage::onBtnPressed(unsigned char pin)
 {
     // change page to PitchPage
     if (pin == BTN_ENC0)
-    {   
+    {
         PageManager.switchPage(PITCH_PAGE);
     }
     else if (pin == BTN_ENC1)
@@ -29,16 +29,18 @@ void MixPage::onBtnReleased(unsigned char pin)
 void MixPage::onEncTurned(unsigned char id, int value)
 {
     if (id == 0)
-    {   
+    {
         enc0Value = value;
         wetCal = 0.01 * value;
         pitchShiftL.setWetMix(wetCal);
+        pitchShiftR.setWetMix(wetCal);
     }
     else if (id == 1)
     {
         enc1Value = value;
         dryCal = 0.01 * value;
         pitchShiftL.setDryMix(dryCal);
+        pitchShiftR.setDryMix(dryCal);
     }
     updateDisplay();
 }
