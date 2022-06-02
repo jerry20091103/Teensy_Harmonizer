@@ -1,6 +1,7 @@
 #ifndef AUDIO_OBJECTS_H
 #define AUDIO_OBJECTS_H
 
+#define USE_ARM_DSP
 #include <Audio.h>
 #include "AudioStream.h"
 #include <daisysp.h>

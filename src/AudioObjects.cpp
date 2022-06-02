@@ -63,7 +63,7 @@ void AudioEffectPitchShift::setBlockSize(uint8_t id)
 {
     __disable_irq();
     dsPitchShift.SetDelSize(blockSize[id]);
-    __disable_irq();
+    __enable_irq();
 }
 
 void AudioEffectPitchShift::setWetMix(float value)
