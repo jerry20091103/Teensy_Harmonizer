@@ -6,10 +6,6 @@ void MixPage::onBtnPressed(unsigned char pin)
     // change page to PitchPage
     if (pin == BTN_ENC0)
     {   
-        //enc0Value = wetCal * 100;
-        //enc1Value = dryCal * 100;
-        Serial.printf("*--wetCal: %f, enc0Value: %d--\n", wetCal, enc0Value);
-        Serial.printf("*--dryCal: %f, enc1Value: %d--\n", dryCal, enc1Value);
         PageManager.switchPage(PITCH_PAGE);
     }
     else if (pin == BTN_ENC1)
@@ -51,8 +47,6 @@ void MixPage::configurePage()
 {
     enc0->changePrecision(100, enc0Value);
     enc1->changePrecision(100, enc1Value);
-    Serial.printf("--wetCal: %f, enc0Value: %d--\n", wetCal, enc0Value);
-    Serial.printf("--dryCal: %f, enc1Value: %d--\n", dryCal, enc1Value);
     updateDisplay();
 }
 
