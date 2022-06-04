@@ -10,11 +10,14 @@ AudioFilterBiquad lpf;
 AudioAnalyzeNoteFrequency noteFreq;
 
 AudioOutputI2S i2sOut;
+AudioOutputUSB usbOut;
 
 AudioConnection Con_i2sIn_psL(i2sIn, 0, pitchShiftL, 0);
 AudioConnection Con_i2sIn_psR(i2sIn, 1, pitchShiftR, 0);
 AudioConnection Con_psL_i2sOut(pitchShiftL, 0, i2sOut, 0);
 AudioConnection Con_psR_i2sOut(pitchShiftR, 0, i2sOut, 1);
+AudioConnection Con_psL_usbOut(pitchShiftL, 0, usbOut, 0);
+AudioConnection Con_psR_usbOut(pitchShiftR, 0, usbOut, 1);
 AudioConnection Con_i2sIn_lpf(i2sIn, 0, lpf, 0);
 AudioConnection Con_lpf_nf(lpf, 0, noteFreq, 0);
 
