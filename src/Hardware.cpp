@@ -53,5 +53,5 @@ void HardwareSetup()
     AudioMemory(100);
     sgtl5000.enable();
     sgtl5000.inputSelect(AUDIO_INPUT_LINEIN);
-    sgtl5000.volume(0.5);
+    sgtl5000.volume(0.6);
 }

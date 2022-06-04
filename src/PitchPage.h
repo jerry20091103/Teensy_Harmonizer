@@ -35,10 +35,15 @@ public:
 
 private:
     Key key = C;
-    int8_t interval = 0;
+    Key keyForMode = C;
+    int8_t interval = 1;
+    // 1 for Major and 0 for minor
+    bool mode = 1;
 
     void updateDisplay();
     String keyToString(Key key);
+    String modeToString(bool mode);
+
 };
 
 #endif

@@ -9,9 +9,30 @@ void PitchPage::onBtnPressed(unsigned char pin)
     {
         PageManager.switchPage(MIX_PAGE);
     }
+    // change mode (M.(1) for major and m.(0) for minor)
     else if (pin == BTN_ENC1)
     {
-        // no function yet
+        if (mode == 0)
+        {
+            mode = 1;
+        }
+        else if (mode == 1)
+        {
+            mode = 0;
+        }
+        // for Major key
+        keyForMode = key;
+        // for minor key
+        if (mode == 0)
+        {
+            keyForMode = (Key)(keyForMode + 3);
+            if (keyForMode > 11)
+            {
+                keyForMode = (Key)(keyForMode - 12);
+            }
+        } 
+        pitchDetect.setKey(keyForMode);
+        updateDisplay();
     }
 }
 
@@ -40,7 +61,18 @@ void PitchPage::onEncTurned(unsigned char id, int value)
         {
             key = (Key)0;
         }
-        pitchDetect.setKey(key);
+        // for Major key
+        keyForMode = key;
+        // for minor key
+        if (mode == 0)
+        {
+            keyForMode = (Key)(keyForMode + 3);
+            if (keyForMode > 11)
+            {
+                keyForMode = (Key)(keyForMode - 12);
+            }
+        } 
+        pitchDetect.setKey(keyForMode);
     }
     else if (id == 1)
     {
@@ -52,6 +84,16 @@ void PitchPage::onEncTurned(unsigned char id, int value)
         else if (interval > 8)
         {
             interval = 8;
+        }
+        // from -2 to 1 (clockwise)
+        if (interval == -1 && value == 1)
+        {
+            interval = 1;
+        }
+        // from 1 to -2 (counterclockwise)
+        else if (interval == 0 && value == -1)
+        {
+            interval = -2;
         }
         pitchDetect.setInterval(interval);
     }
@@ -82,8 +124,12 @@ void PitchPage::updateDisplay()
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Key: " + keyToString(key));
+    lcd.setCursor(8, 0);
+    lcd.print("Mode: " + modeToString(mode));
     Serial.println("-------------------");
     Serial.println("Key: " + keyToString(key));
+    Serial.println("Mode: " + modeToString(mode));
+    Serial.println("KeyForMode: " + keyToString(keyForMode));
     lcd.setCursor(0, 1);
     lcd.printf("Interval: %d", interval);
     Serial.printf("Interval: %d\n", interval);
@@ -120,4 +166,20 @@ String PitchPage::keyToString(Key key)
         return String("B");
     }
     return String("?");
+}
+
+String PitchPage::modeToString(bool mode)
+{
+    if (mode == 1)
+    {
+        return String("M.");
+    }
+    else if (mode == 0)
+    {
+        return String("m."); 
+    }
+    else
+    {
+        return String("?");
+    }
 }
