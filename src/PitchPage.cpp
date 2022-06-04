@@ -1,8 +1,6 @@
 #include "PitchPage.h"
 #include "Hardware.h"
-
-Key key = C;
-int8_t interval = 0;
+#include "AudioFunction.h"
 
 void PitchPage::onBtnPressed(unsigned char pin)
 {
@@ -42,6 +40,7 @@ void PitchPage::onEncTurned(unsigned char id, int value)
         {
             key = (Key)0;
         }
+        pitchDetect.setKey(key);
     }
     else if (id == 1)
     {
@@ -54,6 +53,7 @@ void PitchPage::onEncTurned(unsigned char id, int value)
         {
             interval = 8;
         }
+        pitchDetect.setInterval(interval);
     }
     updateDisplay();
 }

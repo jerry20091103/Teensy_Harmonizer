@@ -31,21 +31,13 @@ void blinkLED()
     ledState = !ledState;
 }
 
-// !debug
-uint8_t last_pitch = 0;
-void printPitch()
+void rumHarmonizer()
 {
-    uint8_t cur_pitch = detectPitch(key);
+    uint8_t cur_pitch = pitchDetect.detectPitch();
     // set pitch shift
-    int8_t shift = calculateHarmony(interval, cur_pitch);
+    int8_t shift = pitchDetect.calculateHarmony(cur_pitch);
     pitchShiftL.setSemitone(shift);
     pitchShiftR.setSemitone(shift);
-
-    if (last_pitch != cur_pitch)
-    {
-        Serial.println(cur_pitch);
-        last_pitch = cur_pitch;
-    }
 }
 
 void setup()
@@ -76,7 +68,7 @@ void setup()
     pinMode(LED_BUILTIN, OUTPUT);
     taskManager.scheduleFixedRate(1000, blinkLED);
     // Detect note
-    taskManager.scheduleFixedRate(3, printPitch);
+    taskManager.scheduleFixedRate(3, rumHarmonizer);
 
     // unmute amp
     digitalWrite(0, HIGH);

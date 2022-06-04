@@ -5,7 +5,7 @@
 #define HIGH_NOTE 100
 #define LOW_NOTE 40
 
-uint8_t lastNote = 0;
+PitchDetect pitchDetect;
 
 // stores the distance between notes in a major scale
 // ex.  II -> IV : 3 semitones
@@ -33,7 +33,7 @@ int16_t f2s16(float x)
     return (int16_t)(x * F2S16_SCALE);
 }
 
-uint8_t detectPitch(Key key)
+uint8_t PitchDetect::detectPitch()
 {
     if (noteFreq.available())
     {
@@ -41,7 +41,7 @@ uint8_t detectPitch(Key key)
         float note = freqToNote(freq);
         if (note < LOW_NOTE || note > HIGH_NOTE) // discard notes that are too high or too low.
             return lastNote;
-        uint8_t res = roundToMajor(note, key);
+        uint8_t res = roundToMajor(note, cur_key);
         if (res != lastNote)
         {
             lastNote = res;
@@ -50,7 +50,7 @@ uint8_t detectPitch(Key key)
     return lastNote;
 }
 
-uint8_t roundToMajor(float note, Key key)
+uint8_t PitchDetect::roundToMajor(float note, Key key)
 {
     // shift to C major and convert to 0 ~ 12
     note -= int(key);
@@ -77,23 +77,33 @@ uint8_t roundToMajor(float note, Key key)
         return 0; // I
 }
 
-int8_t calculateHarmony(int8_t interval, uint8_t note)
+int8_t PitchDetect::calculateHarmony(uint8_t note)
 {
     int8_t sum = 0;
-    if (interval > 0)
+    if (cur_interval > 0)
     {
-        for (int8_t i = 0; i < interval - 1; i++)
+        for (int8_t i = 0; i < cur_interval - 1; i++)
         {
             sum += noteDistance[(note + i) % 7];
         }
     }
-    else if(interval < 0)
+    else if (cur_interval < 0)
     {
-        for (int8_t i = 1; i < (-interval); i++)
+        for (int8_t i = 1; i < (-cur_interval); i++)
         {
             sum += noteDistance[(note - i + 7) % 7];
         }
         sum = -sum;
     }
     return sum;
+}
+
+void PitchDetect::setInterval(int8_t interval)
+{
+    cur_interval = interval;
+}
+
+void PitchDetect::setKey(Key key)
+{
+    cur_key = key;
 }
