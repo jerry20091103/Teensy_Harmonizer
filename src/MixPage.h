@@ -26,6 +26,7 @@ private:
     // for changePrecision used by MixPage
     int enc0Value = 50;
     int enc1Value = 50;
+    bool bypass = false;
 };
 
 #endif

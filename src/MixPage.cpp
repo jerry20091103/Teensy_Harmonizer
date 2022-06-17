@@ -10,7 +10,24 @@ void MixPage::onBtnPressed(unsigned char pin)
     }
     else if (pin == BTN_ENC1)
     {
-        // no function yet
+        bypass = !bypass;
+        if (bypass)
+        {
+            pitchShiftL.setDryMix(1);
+            pitchShiftR.setDryMix(1);
+
+            pitchShiftL.setWetMix(0);
+            pitchShiftR.setWetMix(0);
+        }
+        else
+        {
+            pitchShiftL.setDryMix(dryCal);
+            pitchShiftR.setDryMix(dryCal);
+
+            pitchShiftL.setWetMix(wetCal);
+            pitchShiftR.setWetMix(wetCal);
+        }
+        updateDisplay();
     }
 }
 
@@ -32,15 +49,21 @@ void MixPage::onEncTurned(unsigned char id, int value)
     {
         enc0Value = value;
         wetCal = 0.01 * value;
-        pitchShiftL.setWetMix(wetCal);
-        pitchShiftR.setWetMix(wetCal);
+        if (!bypass)
+        {
+            pitchShiftL.setWetMix(wetCal);
+            pitchShiftR.setWetMix(wetCal);
+        }
     }
     else if (id == 1)
     {
         enc1Value = value;
         dryCal = 0.01 * value;
-        pitchShiftL.setDryMix(dryCal);
-        pitchShiftR.setDryMix(dryCal);
+        if (!bypass)
+        {
+            pitchShiftL.setDryMix(dryCal);
+            pitchShiftR.setDryMix(dryCal);
+        }
     }
     updateDisplay();
 }
@@ -75,4 +98,9 @@ void MixPage::updateDisplay()
     lcd.printf("Dry: %.2f", dryCal);
     Serial.printf("Dry: %.2f\n", dryCal);
     Serial.println("-------------------");
+    if (bypass)
+    {
+        lcd.setCursor(10, 0);
+        lcd.print("BYPASS");
+    }
 }

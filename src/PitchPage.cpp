@@ -125,7 +125,7 @@ void PitchPage::updateDisplay()
     lcd.setCursor(0, 0);
     lcd.print("Key: " + keyToString(key));
     lcd.setCursor(8, 0);
-    lcd.print("Mode: " + modeToString(mode));
+    lcd.print(modeToString(mode));
     Serial.println("-------------------");
     Serial.println("Key: " + keyToString(key));
     Serial.println("Mode: " + modeToString(mode));
@@ -172,11 +172,11 @@ String PitchPage::modeToString(bool mode)
 {
     if (mode == 1)
     {
-        return String("M.");
+        return String("Major");
     }
     else if (mode == 0)
     {
-        return String("m."); 
+        return String("minor"); 
     }
     else
     {

@@ -19,6 +19,14 @@
 
 bool ledState = false;
 
+void checkAudioUsage() 
+{
+    Serial.println("Memory:    " + String(AudioMemoryUsageMax()));
+    Serial.println("Processor: " + String(AudioProcessorUsageMax()));
+    AudioMemoryUsageMaxReset();
+    AudioProcessorUsageMaxReset();
+}
+
 void updatePage()
 {
     PageManager.getCurPage()->update();
@@ -69,6 +77,7 @@ void setup()
     taskManager.scheduleFixedRate(1000, blinkLED);
     // Detect note
     taskManager.scheduleFixedRate(3, rumHarmonizer);
+    taskManager.scheduleFixedRate(5000, checkAudioUsage);
 
     // unmute amp
     digitalWrite(0, HIGH);
@@ -79,8 +88,8 @@ void setup()
     // Init note detector
     noteFreq.begin(0.15);
     // !debug: test with mic
-    sgtl5000.inputSelect(AUDIO_INPUT_MIC);
-    sgtl5000.micGain(30);   // need to set gain again after selecting mic
+    // sgtl5000.inputSelect(AUDIO_INPUT_MIC);
+    // sgtl5000.micGain(30);   // need to set gain again after selecting mic
     
     // Init audio filter
     //lpf.setLowpass(0, 3000); // ? low pass filter seems to hurt YIN algo really badly.
